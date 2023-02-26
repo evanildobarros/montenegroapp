@@ -1,0 +1,71 @@
+{
+	"name": "dereuromark/cakephp-queue",
+	"type": "cakephp-plugin",
+	"description": "The Queue plugin for CakePHP provides deferred task execution.",
+	"keywords": ["cakephp","queue","deferred tasks","background"],
+	"homepage": "https://github.com/dereuromark/cakephp-queue",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Mark Scherer",
+			"homepage": "https://www.dereuromark.de",
+			"role": "Maintainer"
+		},
+		{
+			"name": "Contributors",
+			"homepage": "https://github.com/dereuromark/cakephp-queue/graphs/contributors",
+			"role": "Contributor"
+		}
+	],
+	"require": {
+		"php": ">=7.3",
+		"cakephp/cakephp": "^4.2.0"
+	},
+	"require-dev": {
+		"cakephp/bake": "^2.5.0",
+		"cakephp/migrations": "^3.0.0",
+		"friendsofcake/search": "^6.0.0",
+		"dereuromark/cakephp-tools": "^2.4.0",
+		"dereuromark/cakephp-ide-helper": "^1.0.0",
+		"cakephp/plugin-installer": "^1.3",
+		"phpunit/phpunit": "^9.5",
+		"fig-r/psr2r-sniffer": "dev-master"
+	},
+	"suggest": {
+		"friendsofcake/search": "For admin backend and filtering of current jobs.",
+		"dereuromark/cakephp-tools": "For the QueueEmailTask (if you don't write your own task here). Also for admin backend.",
+		"dereuromark/cakephp-ide-helper": "For maximum IDE support, especially around createJob() usage."
+	},
+	"support": {
+		"source": "https://github.com/dereuromark/cakephp-queue"
+	},
+	"autoload": {
+		"psr-4": {
+			"Queue\\": "src/",
+			"Queue\\Test\\Fixture\\": "tests/Fixture/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Queue\\Test\\TestCase\\": "tests/TestCase/",
+			"TestApp\\": "tests/test_app/src/",
+			"Foo\\": "tests/test_app/plugins/Foo/src/"
+		}
+	},
+	"prefer-stable": true,
+	"scripts": {
+		"stan": "phpstan analyse",
+		"stan-tests": "phpstan analyse -c tests/phpstan.neon",
+		"stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^1.0.0 && mv composer.backup composer.json",
+		"test": "phpunit",
+		"test-coverage": "phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --coverage-clover tmp/coverage/coverage.xml",
+		"lowest": "validate-prefer-lowest",
+		"lowest-setup": "composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction && cp composer.json composer.backup && composer require --dev dereuromark/composer-prefer-lowest && mv composer.backup composer.json",
+		"cs-check": "phpcs -p -s --standard=vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml --ignore=/config/Migrations/,/tests/test_files/ --extensions=php src/ tests/ config/",
+		"cs-fix": "phpcbf -p --standard=vendor/fig-r/psr2r-sniffer/PSR2R/ruleset.xml --ignore=/config/Migrations/,/tests/test_files/ --extensions=php src/ tests/ config/"
+	},
+	"config": {
+		"sort-packages": true,
+		"process-timeout": 600
+	}
+}

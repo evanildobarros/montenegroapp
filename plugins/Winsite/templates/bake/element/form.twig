@@ -1,0 +1,85 @@
+{#
+/**
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @since         2.0.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
+#}
+{% set fields = Bake.filterFields(fields, schema, modelObject) %}
+{% set actions = { 'add': 'Adicionar', 'edit': 'Editar' } %}
+<section class="content">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <?php echo $this->Html->link(__('Painel administrativo'), ['controller' => 'users', 'action' => 'dashboard'], ['escape' => false, 'title' => __('Painel Administrativo')]); ?>
+        </li>
+        <li class="breadcrumb-item">
+            <?php echo $this->Html->link(__('{{ pluralHumanName }}'), ['action' => 'index'], ['escape' => false, 'title' => __('{{ pluralHumanName }}')]); ?>
+        </li>
+        <li class="breadcrumb-item active">
+            <?php echo __('{{ action in actions|keys ? actions[action]|humanize : action|humanize }}') ?>
+        </li>
+    </ol>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <?php echo __('{{ action in actions|keys ? actions[action]|humanize : action|humanize }} {{ singularHumanName }}') ?>
+            </h3>
+        </div>
+        <?php echo $this->Form->create(${{ singularVar }}); ?>
+        <div class="card-body">
+            <div class="row">
+                <?php
+{% for field in fields %}
+{%- if field not in primaryKey %}
+    {%- if keyFields[field] is defined %}
+        {%- set fieldData = Bake.columnData(field, schema) %}
+        {%- if fieldData.null %}
+                echo $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}, 'empty' => true]);
+                {{- "\n" }}
+        {%- else %}
+                echo $this->Form->control('{{ field }}', ['options' => ${{ keyFields[field] }}]);
+                {{- "\n" }}
+        {%- endif %}
+    {%- elseif field not in ['created', 'modified', 'updated'] %}
+        {%- set fieldData = Bake.columnData(field, schema) %}
+        {%- if fieldData.type in ['date', 'datetime', 'time'] and fieldData.null %}
+                echo $this->Form->control('{{ field }}', ['empty' => true]);
+                {{- "\n" }}
+        {%- else %}
+                echo $this->Form->control('{{ field }}');
+                {{- "\n" }}
+        {%- endif %}
+    {%- endif %}
+{%- endif %}
+{%- endfor %}
+
+{%- if associations.BelongsToMany is defined %}
+{%- for assocName, assocData in associations.BelongsToMany %}
+                    echo $this->Form->control('{{ assocData.property }}._ids', ['options' => ${{ assocData.variable }}]);
+                    {{- "\n" }}
+{%- endfor %}
+{% endif %}
+                ?>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="float-right">
+                <div class="input-group">
+                    <?php
+                    echo $this->Html->link('<i class="fa fa-ban mr-1"></i>' . __('Cancelar'), ['action' => 'index'], ['class' => 'btn btn-default mr-2', 'escape' => false, 'title' => __('Cancelar')]);
+                    echo $this->Form->button('<i class="fa fa-save mr-1"></i>' . __('Salvar'), ['type' => 'submit', 'class' => 'btn btn-success', 'escapeTitle' => false, 'title' => __('Salvar')]);
+                    ?>
+                </div>
+            </div>
+        </div>
+        <?php echo $this->Form->end(); ?>
+    </div>
+</section>

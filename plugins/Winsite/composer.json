@@ -1,0 +1,23 @@
+{
+    "name": "winsite/Winsite",
+    "description": "Winsite plugin for CakePHP",
+    "type": "cakephp-plugin",
+    "require": {
+        "php": ">=7.2",
+        "cakephp/cakephp": ">=4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Winsite\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Winsite\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+        }
+    }
+}

@@ -1,0 +1,16 @@
+parameters:
+	level: 7
+	checkMissingIterableValueType: false
+	checkGenericClassInNonGenericObjectType: false
+	paths:
+		- src
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$field of method Cake\\\\Datasource\\\\EntityInterface\\:\\:get\\(\\) expects string, array\\<string\\>\\|string given\\.$#"
+			count: 1
+			path: src/File/Path/DefaultProcessor.php
+
+		-
+			message: "#^Constant ROOT not found\\.$#"
+			count: 1
+			path: src/File/Writer/DefaultWriter.php
